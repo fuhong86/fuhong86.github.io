@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://fuhong86.github.io/</id>
+    <title>SnailMemos</title>
+    <updated>2025-11-14T04:02:39.098Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://fuhong86.github.io/"/>
+    <link rel="self" href="https://fuhong86.github.io/atom.xml"/>
+    <subtitle>Just My Memos</subtitle>
+    <logo>https://fuhong86.github.io/images/avatar.png</logo>
+    <icon>https://fuhong86.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2025, SnailMemos</rights>
+    <entry>
+        <title type="html"><![CDATA[Linux安装与卸载应用命令]]></title>
+        <id>https://fuhong86.github.io/post/linux-an-zhuang-ying-yong-ming-ling/</id>
+        <link href="https://fuhong86.github.io/post/linux-an-zhuang-ying-yong-ming-ling/">
+        </link>
+        <updated>2025-11-14T02:05:42.000Z</updated>
+        <content type="html"><![CDATA[<pre><code>#安装
+sudo dpkg -i xxxx.deb
+#卸载，先查包名，再删除包，-r保留配置，-P安全删除
+dpkg -l | grep xxx
+sudo dpkg -P xxxx
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[修改镜像源]]></title>
+        <id>https://fuhong86.github.io/post/xiu-gai-jing-xiang-yuan/</id>
+        <link href="https://fuhong86.github.io/post/xiu-gai-jing-xiang-yuan/">
+        </link>
+        <updated>2025-11-13T13:22:41.000Z</updated>
+        <content type="html"><![CDATA[<pre><code>nano /etc/docker/daemon.json
+
+{
+    &quot;registry-mirrors&quot;: [
+        &quot;https://docker.1panel.live&quot;,
+        &quot;https://docker.1ms.run&quot;
+    ]
+}
+
+systemctl restart docker
+</code></pre>
+]]></content>
+    </entry>
+</feed>
