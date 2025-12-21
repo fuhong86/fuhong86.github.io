@@ -1,0 +1,341 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Debian_LXDE配置 | SnailMemos</title>
+<link rel="shortcut icon" href="https://fuhong86.github.io//favicon.ico?v=1766294958074">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fuhong86.github.io//styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Debian_LXDE配置 | SnailMemos - Atom Feed" href="https://fuhong86.github.io//atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="一、换源
+# 更新软件包索引
+sudo apt update
+
+# 升级系统已安装包（可选但推荐）
+sudo apt full-upgrade -y
+
+二、安装
+# 安装LXDE桌面核心包 + LightDM显示管理器（LXDE默认搭配）
+..." />
+    <meta name="keywords" content="linux,debian" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://fuhong86.github.io/">
+  <img class="avatar" src="https://fuhong86.github.io//images/avatar.png?v=1766294958074" alt="">
+  </a>
+  <h1 class="site-title">
+    SnailMemos
+  </h1>
+  <p class="site-description">
+    Just My Memos
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Debian_LXDE配置
+            </h2>
+            <div class="post-info">
+              <span>
+                2025-12-10
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+                <a href="https://fuhong86.github.io/tag/VOlwUls7ne/" class="post-tag">
+                  # linux
+                </a>
+              
+                <a href="https://fuhong86.github.io/tag/crgq5pQiFEE/" class="post-tag">
+                  # debian
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="一-换源">一、换源</h2>
+<pre><code># 更新软件包索引
+sudo apt update
+
+# 升级系统已安装包（可选但推荐）
+sudo apt full-upgrade -y
+</code></pre>
+<h2 id="二-安装">二、安装</h2>
+<pre><code># 安装LXDE桌面核心包 + LightDM显示管理器（LXDE默认搭配）
+sudo apt install lxde lightdm -y
+</code></pre>
+<ul>
+<li>以下方法安装失败</li>
+</ul>
+<blockquote>
+<p>通过 tasksel 安装</p>
+</blockquote>
+<pre><code># 先安装tasksel工具（若未安装）
+sudo apt install tasksel -y
+
+# 安装LXDE桌面任务组
+sudo tasksel install lxde-desktop
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://fuhong86.github.io//post-images/1765375916059.png" alt="" loading="lazy"></figure>
+<h2 id="三-创建登录账号">三、创建登录账号</h2>
+<pre><code>sudo useradd -m -s /bin/bash username
+sudo passwd username
+
+# 将用户添加到sudo组
+sudo usermod -aG sudo username
+
+# 或在创建用户时直接添加
+sudo adduser username --ingroup sudo
+</code></pre>
+<h2 id="四-开启ssh">四、开启SSH</h2>
+<pre><code>#编辑配置文件 
+nano /etc/ssh/sshd_config
+
+#找到Port 22去掉注释 
+#找到PermitRootLogin 改为yes允许root登录，如果添加了用户，可以不开启root登录
+
+#修改好重启服务
+service sshd restart
+</code></pre>
+<h2 id="五-安装远程">五、安装远程</h2>
+<pre><code># 安装xrdp（远程桌面服务）
+sudo apt install xrdp -y
+
+# 给xrdp添加权限（解决连接黑屏问题）
+sudo adduser xrdp ssl-cert
+
+# 重启xrdp服务
+sudo systemctl restart xrdp
+</code></pre>
+<h2 id="六-安装中文语言">六、安装中文语言</h2>
+<pre><code># 安装locales，默认有
+sudo apt install locales
+# 配置语言环境
+sudo dpkg-reconfigure locales
+
+# 如果没有命令，可能是环境问题，以下方式可修复
+# 临时生效（当前会话）
+export PATH=$PATH:/usr/sbin
+# 永久生效（所有 root 会话）
+echo 'export PATH=$PATH:/usr/sbin' &gt;&gt; /root/.bashrc
+source /root/.bashrc
+# 验证 PATH 是否包含 /usr/sbin
+echo $PATH  # 输出中能看到 /usr/sbin 即可
+
+# 如果是缺失命令，可以安装包补充
+sudo apt install -y dpkg-dev
+</code></pre>
+<h2 id="七-修改时区">七、修改时区</h2>
+<pre><code>sudo timedatectl set-timezone Asia/Shanghai
+</code></pre>
+<h2 id="八-安装输入法">八、安装输入法</h2>
+<pre><code>sudo apt install fcitx5 fcitx5-chinese-addons
+</code></pre>
+<h2 id="九-安装chrome">九、安装chrome</h2>
+<pre><code># 安装必要依赖
+sudo apt install -y curl gnupg ca-certificates apt-transport-https
+
+# 下载并导入密钥（适配Debian 13，替换旧的密钥服务器方式）
+curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | sudo gpg --dearmor -o /usr/share/keyrings/google-chrome-keyring.gpg
+
+# 创建并编辑chrome源文件
+echo &quot;deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome-keyring.gpg] https://dl.google.com/linux/chrome/deb/ stable main&quot; | sudo tee /etc/apt/sources.list.d/google-chrome.list
+
+# 再次更新apt缓存（加载新添加的Chrome源）
+sudo apt update
+
+# 安装正式版Chrome（推荐）
+sudo apt install -y google-chrome-stable
+
+# 若需测试版/开发版，替换为以下命令（可选）：
+# sudo apt install -y google-chrome-beta  # 测试版
+# sudo apt install -y google-chrome-unstable  # 开发版
+</code></pre>
+<h2 id="十-安装微信">十、安装微信</h2>
+<pre><code>下载地址：https://linux.weixin.qq.com/
+
+sudo dpkg -i WeChatLinux_x86_64.deb
+
+
+</code></pre>
+<blockquote>
+<p>微信N开脚本（需要+x运行），先正常登录微信，后续用脚本启动微信</p>
+</blockquote>
+<pre><code>#!/bin/bash
+
+# 删除 lock.ini 文件
+if [ -f &quot;$HOME/.xwechat/lock/lock.ini&quot; ]; then
+    rm -f &quot;$HOME/.xwechat/lock/lock.ini&quot;
+fi
+
+# 启动微信
+/usr/bin/wechat %U  # 使用微信程序的实际路径
+</code></pre>
+<h2 id="十一-安装钉钉">十一、安装钉钉</h2>
+<pre><code>#debian13有坑
+# 下载地址：https://www.dingtalk.com/download
+sudo dpkg -i com.xxxxx.deb
+
+# 安装完启动不了，开始排查，因debian13不支持execstack，需要替换为patchelf
+sudo apt update
+sudo apt install patchelf  
+
+#开始修复，注册目录
+sudo patchelf --clear-execstack /opt/apps/com.alibabainc.dingtalk/files/7.8.15-Release.5102301/dingtalk_dll.so 
+sudo patchelf --clear-execstack /opt/apps/com.alibabainc.dingtalk/files/7.8.15-Release.5102301/libconference_new.so 
+
+# 启动钉钉验证
+/opt/apps/com.alibabainc.dingtalk/files/Elevator.sh
+
+# 还是启动不了，就查看日志，把日志粘贴给AI
+cat /var/log/dpkg.log
+
+# 例如日志提示
+# Release.5102301//dingtalk_dll.so failed! Err=libpulse-mainloop-glib.so.0: cannot open shared object file: No such file or directory
+# 缺少libpulse-mainloop-glib.so.0文件，AI提示修复脚本，修复后再启动验证一下
+sudo apt install libpulse-mainloop-glib0
+
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E4%B8%80-%E6%8D%A2%E6%BA%90">一、换源</a></li>
+<li><a href="#%E4%BA%8C-%E5%AE%89%E8%A3%85">二、安装</a></li>
+<li><a href="#%E4%B8%89-%E5%88%9B%E5%BB%BA%E7%99%BB%E5%BD%95%E8%B4%A6%E5%8F%B7">三、创建登录账号</a></li>
+<li><a href="#%E5%9B%9B-%E5%BC%80%E5%90%AFssh">四、开启SSH</a></li>
+<li><a href="#%E4%BA%94-%E5%AE%89%E8%A3%85%E8%BF%9C%E7%A8%8B">五、安装远程</a></li>
+<li><a href="#%E5%85%AD-%E5%AE%89%E8%A3%85%E4%B8%AD%E6%96%87%E8%AF%AD%E8%A8%80">六、安装中文语言</a></li>
+<li><a href="#%E4%B8%83-%E4%BF%AE%E6%94%B9%E6%97%B6%E5%8C%BA">七、修改时区</a></li>
+<li><a href="#%E5%85%AB-%E5%AE%89%E8%A3%85%E8%BE%93%E5%85%A5%E6%B3%95">八、安装输入法</a></li>
+<li><a href="#%E4%B9%9D-%E5%AE%89%E8%A3%85chrome">九、安装chrome</a></li>
+<li><a href="#%E5%8D%81-%E5%AE%89%E8%A3%85%E5%BE%AE%E4%BF%A1">十、安装微信</a></li>
+<li><a href="#%E5%8D%81%E4%B8%80-%E5%AE%89%E8%A3%85%E9%92%89%E9%92%89">十一、安装钉钉</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://fuhong86.github.io/post/nextcloud-aio/">
+              <h3 class="post-title">
+                NextCloud AIO
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://fuhong86.github.io/" target="_blank">Snail</a>
+  <a class="rss" href="https://fuhong86.github.io//atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,290 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Debian记录 | SnailMemos</title>
+<link rel="shortcut icon" href="https://fuhong86.github.io//favicon.ico?v=1766294958074">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fuhong86.github.io//styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Debian记录 | SnailMemos - Atom Feed" href="https://fuhong86.github.io//atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="在pve创建了一个新的lxc容器
+换源
+
+新的LXC容器什么都没有，包括curl也没有，没办法一键脚本换源，只能手动
+https://mirrors.tuna.tsinghua.edu.cn/help/debian/
+传统格式（/etc/a..." />
+    <meta name="keywords" content="linux,debian" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://fuhong86.github.io/">
+  <img class="avatar" src="https://fuhong86.github.io//images/avatar.png?v=1766294958074" alt="">
+  </a>
+  <h1 class="site-title">
+    SnailMemos
+  </h1>
+  <p class="site-description">
+    Just My Memos
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Debian记录
+            </h2>
+            <div class="post-info">
+              <span>
+                2025-11-30
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+                <a href="https://fuhong86.github.io/tag/VOlwUls7ne/" class="post-tag">
+                  # linux
+                </a>
+              
+                <a href="https://fuhong86.github.io/tag/crgq5pQiFEE/" class="post-tag">
+                  # debian
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <p>在pve创建了一个新的lxc容器</p>
+<h3 id="换源">换源</h3>
+<blockquote>
+<p>新的LXC容器什么都没有，包括curl也没有，没办法一键脚本换源，只能手动<br>
+https://mirrors.tuna.tsinghua.edu.cn/help/debian/<br>
+传统格式（/etc/apt/sources.list）Debian 版本 Debian 12 (bookworm)</p>
+</blockquote>
+<pre><code># 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
+deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main contrib non-free non-free-firmware
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main contrib non-free non-free-firmware
+
+deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main contrib non-free non-free-firmware
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main contrib non-free non-free-firmware
+
+deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-backports main contrib non-free non-free-firmware
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-backports main contrib non-free non-free-firmware
+
+# 以下安全更新软件源包含了官方源与镜像站配置，如有需要可自行修改注释切换
+deb https://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
+# deb-src https://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
+</code></pre>
+<p>debian13 DEB822 格式（/etc/apt/sources.list.d/debian.sources）</p>
+<pre><code>Types: deb
+URIs: https://mirrors.tuna.tsinghua.edu.cn/debian
+Suites: trixie trixie-updates trixie-backports
+Components: main contrib non-free non-free-firmware
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+# 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
+# Types: deb-src
+# URIs: https://mirrors.tuna.tsinghua.edu.cn/debian
+# Suites: trixie trixie-updates trixie-backports
+# Components: main contrib non-free non-free-firmware
+# Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+# 以下安全更新软件源包含了官方源与镜像站配置，如有需要可自行修改注释切换
+Types: deb
+URIs: https://security.debian.org/debian-security
+Suites: trixie-security
+Components: main contrib non-free non-free-firmware
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+# Types: deb-src
+# URIs: https://security.debian.org/debian-security
+# Suites: trixie-security
+# Components: main contrib non-free non-free-firmware
+# Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+</code></pre>
+<h3 id="更新">更新</h3>
+<pre><code>apt update
+apt upgrade
+</code></pre>
+<h3 id="安装docker">安装docker</h3>
+<pre><code>#安装必要软件包
+apt install curl vim wget gnupg dpkg apt-transport-https lsb-release ca-certificates
+
+#加入docker源
+curl -sS https://download.docker.com/linux/debian/gpg | gpg --dearmor &gt; /usr/share/keyrings/docker-ce.gpg
+echo &quot;deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-ce.gpg] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/debian $(lsb_release -sc) stable&quot; &gt; /etc/apt/sources.list.d/docker.list
+
+#加入源后需要更新一下
+apt update
+
+#安装docker
+apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+#开启IPV6和日志大小配置
+cat &gt; /etc/docker/daemon.json &lt;&lt; EOF
+{
+    &quot;log-driver&quot;: &quot;json-file&quot;,
+    &quot;log-opts&quot;: {
+        &quot;max-size&quot;: &quot;20m&quot;,
+        &quot;max-file&quot;: &quot;3&quot;
+    },
+    &quot;ipv6&quot;: true,
+    &quot;fixed-cidr-v6&quot;: &quot;fd00:dead:beef:c0::/80&quot;,
+    &quot;experimental&quot;:true,
+    &quot;ip6tables&quot;:true
+}
+EOF
+
+#重启生效
+systemctl restart docker
+
+</code></pre>
+<h3 id="ssh">SSH</h3>
+<blockquote>
+<p>LXC容器默认没有开SSH，需要手动打开</p>
+</blockquote>
+<pre><code>#编辑配置文件 
+nano /etc/ssh/sshd_config
+
+#找到Port 22去掉注释 
+#找到PermitRootLogin 改为yes允许root登录
+
+#修改好重启服务
+service sshd restart
+
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E6%8D%A2%E6%BA%90">换源</a></li>
+<li><a href="#%E6%9B%B4%E6%96%B0">更新</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85docker">安装docker</a></li>
+<li><a href="#ssh">SSH</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://fuhong86.github.io/post/linux-shi-yong-onlyoffice/">
+              <h3 class="post-title">
+                Linux使用onlyoffice
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://fuhong86.github.io/" target="_blank">Snail</a>
+  <a class="rss" href="https://fuhong86.github.io//atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
